@@ -60,7 +60,7 @@ def singleRowInsert():
                            "currency  VARCHAR(50),"
                            "population VARCHAR(200),"
                            "gdp VARCHAR(50),"
-                           "flagURI VARCHAR(500),"
+                           "flagURI VARCHAR(5000),"
                            "PRIMARY KEY (id))")
 
             cur.execute(createTable)
@@ -68,8 +68,8 @@ def singleRowInsert():
             sqlData = ("INSERT INTO country_table (id, countryName, currency, population, gdp, flagURI) "
                        "VALUES (%s, %s, %s, %s, %s, %s)")
 
-            cur.execute(sqlData, (0, "sample name", "sample currency",
-                                  "sample population", "sample gdp", "sample flagURI"))
+            cur.execute(sqlData, (0, "country name", "country currency",
+                                  "country population", "country gdp", "country flagURI"))
             connection.commit()
 
             with cur as cursor:
@@ -124,7 +124,7 @@ def countryTable():
                                "currency  VARCHAR(50),"
                                "population VARCHAR(200),"
                                "gdp VARCHAR(50),"
-                               "flagURI VARCHAR(500),"
+                               "flagURI VARCHAR(5000),"
                                "PRIMARY KEY (id))")
 
                 cur.execute(createTable)
