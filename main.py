@@ -1,12 +1,13 @@
+
+from flask import Flask, request, flash, redirect, render_template
+from numpy import not_equal
+import pymysql
+
 from ast import Not, Or
 import sys
 import os
 import io
 from webbrowser import get
-
-from flask import Flask, flash, redirect, request, render_template
-from numpy import not_equal
-import pymysql
 
 
 config = {
@@ -25,8 +26,6 @@ app = Flask(__name__, template_folder='template')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == 'POST':
-        print("Data Received")
     return render_template('index.html')
 
 
@@ -56,9 +55,9 @@ def singleRowInsert():
 
             createTable = ("CREATE TABLE IF NOT EXISTS country_table ("
                            "id INT NOT NULL AUTO_INCREMENT,"
-                           "countryName VARCHAR(100),"
-                           "currency  VARCHAR(50),"
-                           "population VARCHAR(200),"
+                           "countryName VARCHAR(50),"
+                           "currency  VARCHAR(30),"
+                           "population VARCHAR(100),"
                            "gdp VARCHAR(50),"
                            "flagURI VARCHAR(5000),"
                            "PRIMARY KEY (id))")
@@ -120,9 +119,9 @@ def countryTable():
 
                 createTable = ("CREATE TABLE IF NOT EXISTS country_table ("
                                "id INT NOT NULL AUTO_INCREMENT,"
-                               "countryName VARCHAR(100),"
-                               "currency  VARCHAR(50),"
-                               "population VARCHAR(200),"
+                               "countryName VARCHAR(50),"
+                               "currency  VARCHAR(30),"
+                               "population VARCHAR(100),"
                                "gdp VARCHAR(50),"
                                "flagURI VARCHAR(5000),"
                                "PRIMARY KEY (id))")
@@ -132,8 +131,7 @@ def countryTable():
                 sqlData = ("INSERT INTO country_table (id, countryName, currency, population, gdp, flagURI) "
                            "VALUES (%s, %s, %s, %s, %s, %s)")
 
-                cur.execute(sqlData, (0, country_name, currency,
-                                      population, gdp, flag_url))
+                cur.execute(sqlData, (0, country_name, currency,population, gdp, flag_url))
                 connection.commit()
 
                 with cur as cursor:
@@ -145,6 +143,27 @@ def countryTable():
 
         return render_template('country-table.html', result=result)
 
+
+
+@app.route('/country-table-delete/<id>/', methods=['GET', 'POST'])
+def deleteTable(id):
+
+    connection = pymysql.connect(**config)
+    cur = connection.cursor()
+
+    sqlDelete = " DELETE FROM `country_table` WHERE `id` = %s"
+
+    cur.execute(sqlDelete, id)
+    connection.commit()
+
+    with cur as cursor:
+
+        cursor.execute("select * from country_table")
+        result = cursor.fetchall()
+
+    cur.close()
+
+    return render_template('country-table.html', result=result)
 
 @app.route('/country-table-update', methods=['GET', 'POST'])
 def updateTable():
@@ -175,8 +194,7 @@ def updateTable():
 
             sqlUpdate = "UPDATE `country_table` SET `countryName` = %s, `currency` = %s, `population` = %s, `gdp` = %s, `flagURI` = %s   WHERE `id` = %s"
 
-            cur.execute(sqlUpdate, (country_name, currency,
-                                    population, gdp, flag_url, id))
+            cur.execute(sqlUpdate, (country_name, currency,population, gdp, flag_url, id))
             connection.commit()
 
             with cur as cursor:
@@ -189,25 +207,6 @@ def updateTable():
         return render_template('country-table.html', result=result)
 
 
-@app.route('/country-table-delete/<id>/', methods=['GET', 'POST'])
-def deleteTable(id):
-
-    connection = pymysql.connect(**config)
-    cur = connection.cursor()
-
-    sqlDelete = " DELETE FROM `country_table` WHERE `id` = %s"
-
-    cur.execute(sqlDelete, id)
-    connection.commit()
-
-    with cur as cursor:
-
-        cursor.execute("select * from country_table")
-        result = cursor.fetchall()
-
-    cur.close()
-
-    return render_template('country-table.html', result=result)
 
 
 if __name__ == "__main__":
