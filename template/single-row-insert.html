@@ -4,17 +4,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link rel="stylesheet" href="/static/style.css" /> -->
     <link rel="stylesheet" href="/css/style.css" />
-    <title>single Row Insert</title>
+    <title>Single Row Insert</title>
   </head>
   <body>
     <div class="container">
       <form action="/single-row-insert" method="post" class="add-btn-conternar">
-        <input class="btn" type="submit" value="insert row" />
+        <input class="btn" type="submit" val="insert row" />
       </form>
 
-      <table border="1">
+      <table>
         <tbody>
           <tr>
             <th>ID</th>
@@ -25,21 +24,19 @@
             <th>Flag URI</th>
           </tr>
 
-          {%for value in result%}
+          {%for val in result%}
           <tr>
-            <td>{{value[0]}}</td>
-            <td>{{value[1]}}</td>
-            <td>{{value[2]}}</td>
-            <td>{{value[3]}}</td>
-            <td>{{value[4]}}</td>
-            <td>{{value[5]}}</td>
+            <td>{{val[0]}}</td>
+            <td>{{val[1]}}</td>
+            <td>{{val[2]}}</td>
+            <td>{{val[3]}}</td>
+            <td>{{val[4]}}</td>
+            <td>{{val[5]}}</td>
           </tr>
           {%endfor%}
         </tbody>
       </table>
-      <form action="/" method="post" class="back-btn-conternar">
-        <input class="serach" type="submit" value="Back" />
-      </form>
+     
     </div>
   </body>
 </html>
