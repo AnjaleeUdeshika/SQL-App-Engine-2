@@ -50,10 +50,10 @@ def singleRowInsert():
 
         with connection:
 
-            sqlStatement = ("CREATE DATABASE IF NOT EXISTS demo")
+            sqlStatement = ("CREATE DATABASE demo")
             cur.execute(sqlStatement)
 
-            createTable = ("CREATE TABLE IF NOT EXISTS country_table ("
+            createTable = ("CREATE TABLE country_table ("
                            "id INT NOT NULL AUTO_INCREMENT,"
                            "countryName VARCHAR(50),"
                            "currency  VARCHAR(30),"
