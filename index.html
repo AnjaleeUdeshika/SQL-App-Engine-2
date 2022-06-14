@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/static/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Country Table</title>
+  </head>
+  <body>
+    <div class="container">
+
+      <!-- Button trigger modal -->
+      <div class="add-btn-conternar">
+        <button
+          type="button"
+          class="btn"
+          data-toggle="modal"
+          data-target="#insertModal"
+        >
+          Add country
+        </button>
+      </div>
+
+      <table class="table-hover">
+        <thead>
+          <tr>
+            <th>Flag</th>
+            <th>Country Name</th>
+            <th>Currency</th>
+            <th>Population</th>
+            <th>GDP</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {%for value in result%}
+          <tr>
+            <td>
+              <img class="country-img" src="{{value[5]}}" alt="country-img" />
+            </td>
+            <td>{{value[1]}}</td>
+            <td>{{value[2]}}</td>
+            <td>{{value[3]}}</td>
+            <td>{{value[4]}}</td>
+            <td>
+              <a
+                href="/update/{{value[0]}}"
+                class="btn"
+                data-toggle="modal"
+                data-target="#editModal{{value[0]}}"
+                style="background-color: #0d9f4c"
+              >
+                Edit
+              </a>
+              </td>
+              <td>
+              <a
+                href="/country-table-delete/{{value[0]}}"
+                class="btn"
+                style="background-color: #842050"
+                >Delete</a
+              >
+            </td>
+          </tr>
+
+          <!--exsit Modal -->
+          <div
+            class="modal fade"
+            id="editModal{{value[0]}}"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div
+                  class="modal-header"
+                  style="background-color: hsl(0, 0%, 0%)"
+                >
+                  <h5 class="modal-title text-white" id="exampleModalLabel">
+                    Edit Country
+                  </h5>
+                  
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="/country-table-update" method="post">
+                    <div class="form-group">
+                      <input
+                        type="hidden"
+                        class="form-control"
+                        name="id"
+                        value="{{value[0]}}"
+                      />
+                    </div>
+
+                    <div class="form-group text-left">
+                      <label>Country Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="country_name"
+                        value="{{value[1]}}"
+                        placeholder="Enter country name"
+                      />
+                    </div>
+
+                    <div class="form-group text-left">
+                      <label>Currency</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="currency"
+                        value="{{value[2]}}"
+                        placeholder="Enter currency of the country"
+                      />
+                    </div>
+
+                    <div class="form-group text-left">
+                      <label>Population</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="population"
+                        value="{{value[3]}}"
+                        placeholder="Enter population of the country"
+                      />
+                    </div>
+
+                    <div class="form-group text-left">
+                      <label>GDP</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="gdp"
+                        value="{{value[4]}}"
+                        placeholder="Enter gdp of the country"
+                      />
+                    </div>
+
+                    <div class="form-group text-left">
+                      <label>Flag URL</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="flag_url"
+                        value="{{value[5]}}"
+                        placeholder="Enter flag URL of the country"
+                      />
+                    </div>
+
+                    <div class="modal-footer">
+                      <button
+                        type="submit"
+                        class="btn"
+                        style="background-color: #0f5132"
+                      >
+                        Save Changes
+                      </button>
+                      
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {%endfor%}
+        </tbody>
+      </table>
+
+    </div>
+
+    <!--insert Modal -->
+    <div
+      class="modal fade"
+      id="insertModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div
+            class="modal-header"
+            style="background-color: hsl(0, 0%, 0%)"
+          >
+            <h5 class="modal-title text-white" id="exampleModalLabel">
+              Add Country
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              style="color: #ffffff"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/country-table" method="post">
+              <div class="form-group">
+                <label>Country Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="country_name"
+                  placeholder="Enter country name"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Currency</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="currency"
+                  placeholder="Enter currency of the country"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Population</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="population"
+                  placeholder="Enter population of the country"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>GDP</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="gdp"
+                  placeholder="Enter gdp of the country"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Flag URL</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="flag_url"
+                  placeholder="Enter flag URL of the country"
+                />
+              </div>
+
+              <div class="modal-footer">
+                <button
+                  type="submit"
+                  class="btn"
+                  style="background-color: #0f5132"
+                >
+                  Submit
+                </button>
+                
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
